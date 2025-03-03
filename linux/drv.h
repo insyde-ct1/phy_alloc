@@ -349,7 +349,11 @@ static int __init Init_Drv(void)
   DrvMinor = MINOR (devno);
 
   // Create device node
+#if LINUX_VERSION_CODE <= KERNEL_VERSION(6,3,13)
   pDrvDevClass = class_create (THIS_MODULE, DEVICE_NAME);
+#else
+  pDrvDevClass = class_create (THIS_MODULE->name);
+#endif
   if (IS_ERR (pDrvDevClass))
     goto error;
 
